@@ -1,0 +1,2150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>虚拟三维卖场 Pro · Retail Studio Ultra · 场景集成版</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Cpath d='M10 24 L54 24 L50 16 L14 16 Z' fill='%2338bdf8'/%3E%3Crect x='20' y='28' width='24' height='26' rx='3' fill='%23bae6fd'/%3E%3Crect x='36' y='40' width='5' height='14' rx='1.5' fill='%230f172a'/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #090d16;
+  --panel: #121824;
+  --panel-border: #232d3f;
+  --text: #f0f4f8;
+  --muted: #8292a6;
+  --accent: #38bdf8;
+  --accent-hover: #0ea5e9;
+  --teal: #10b981;
+  --purple: #a855f7;
+  --amber: #f59e0b;
+  --danger: #ef4444;
+  --card-bg: rgba(18, 24, 36, 0.85);
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+button, input, select {
+  font: inherit;
+  outline: none;
+}
+
+button {
+  border: 1px solid var(--panel-border);
+  background: #1c2536;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 7px 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+button:hover {
+  background: #273449;
+  border-color: #3b4d6b;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button.primary {
+  background: #10b981;
+  color: #042f2e;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+button.primary:hover {
+  background: #34d399;
+}
+
+button.accent {
+  background: var(--accent);
+  color: #082f49;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+button.accent:hover {
+  background: var(--accent-hover);
+}
+
+button.danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+button.danger:hover {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+button.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.15);
+}
+
+#app {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+aside {
+  z-index: 10;
+  background: var(--panel);
+  border-right: 1px solid var(--panel-border);
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 6px 0 24px rgba(0,0,0,0.4);
+}
+
+aside::-webkit-scrollbar {
+  width: 6px;
+}
+aside::-webkit-scrollbar-thumb {
+  background: var(--panel-border);
+  border-radius: 3px;
+}
+aside::-webkit-scrollbar-thumb:hover {
+  background: #3b4d6b;
+}
+
+header {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+header h1 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+header p {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 2px 0 0 0;
+}
+
+details.section {
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+details.section[open] {
+  padding-bottom: 8px;
+}
+
+summary {
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #d1d5db;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid transparent;
+}
+
+details[open] summary {
+  border-bottom-color: var(--panel-border);
+  color: var(--accent);
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+.sec-body {
+  padding: 8px 10px 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.row > * {
+  min-width: 0;
+  flex: 1;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.filebtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px dashed var(--panel-border);
+  border-radius: 8px;
+  padding: 8px;
+  color: #c9d1d9;
+  cursor: pointer;
+  font-size: 11px;
+  background: rgba(9, 13, 22, 0.4);
+  transition: all 0.2s ease;
+}
+
+.filebtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.filebtn input {
+  display: none;
+}
+
+.filebtn.big {
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+label.small {
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+input[type=range] {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+input[type=number], select, input[type=color] {
+  background: #090d16;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 5px 8px;
+  width: 100%;
+}
+
+input[type=color] {
+  height: 28px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+#viewport {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #090d16;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+#topbar {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 14px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#topbar > * {
+  pointer-events: auto;
+}
+
+.topbar-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+
+#status {
+  background: rgba(18, 24, 36, 0.85);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  backdrop-filter: blur(12px);
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+#sceneChip {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11px;
+  color: #bae6fd;
+  white-space: nowrap;
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.toolbar {
+  display: flex;
+  gap: 6px;
+}
+
+.toolbar button {
+  background: rgba(18, 24, 36, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+#help {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  max-width: 320px;
+  background: rgba(18, 24, 36, 0.85);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  z-index: 5;
+}
+
+#dimBadge {
+  position: absolute;
+  display: none;
+  background: rgba(14, 165, 233, 0.9);
+  color: #000;
+  font-weight: 700;
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 6;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+#toast {
+  position: absolute;
+  top: 65px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--teal);
+  color: #042f2e;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-size: 12px;
+  display: none;
+  z-index: 20;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+#transformPanel {
+  position: absolute;
+  right: 14px;
+  top: 65px;
+  background: rgba(18, 24, 36, 0.92);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 12px;
+  width: 230px;
+  backdrop-filter: blur(12px);
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+#transformPanel h3 {
+  font-size: 12px;
+  margin: 0;
+  color: var(--accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.t-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.t-grid button {
+  padding: 5px;
+  font-size: 11px;
+  background: #1c2536;
+}
+
+#mobilePad {
+  display: none;
+  position: absolute;
+  right: 14px;
+  bottom: 20px;
+  gap: 6px;
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(2, 44px);
+  z-index: 10;
+}
+
+#mobilePad button {
+  padding: 0;
+  background: rgba(18, 24, 36, 0.85);
+  font-size: 16px;
+  touch-action: none;
+  backdrop-filter: blur(8px);
+}
+
+.objectlist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.objectlist::-webkit-scrollbar {
+  width: 4px;
+}
+.objectlist::-webkit-scrollbar-thumb {
+  background: var(--panel-border);
+}
+
+.objitem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #090d16;
+  font-size: 11px;
+  color: #c9d1d9;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.objitem.selected {
+  border-color: var(--accent);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.objitem span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.objitem button {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.foot {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+  text-align: center;
+  margin-top: auto;
+  padding-top: 8px;
+  flex-shrink: 0;
+}
+
+/* ===== 场景载入层 ===== */
+#loadOverlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(9, 13, 22, 0.72);
+  backdrop-filter: blur(10px);
+  z-index: 30;
+}
+
+#loadOverlay.show {
+  display: flex;
+}
+
+.load-card {
+  width: min(430px, calc(100vw - 48px));
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+}
+
+.load-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.load-file {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.load-bar {
+  height: 8px;
+  border-radius: 8px;
+  background: #1c2536;
+  overflow: hidden;
+}
+
+#loadBarFill {
+  height: 100%;
+  width: 0%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--teal), var(--accent));
+  transition: width 0.25s ease;
+}
+
+.load-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.spin {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(56, 189, 248, 0.25);
+  border-top-color: var(--accent);
+  animation: loadSpin 0.8s linear infinite;
+  flex: none;
+}
+
+@keyframes loadSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== 手动选择场景卡片 ===== */
+#fallbackCard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  width: min(480px, calc(100vw - 48px));
+  background: var(--panel);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 14px;
+  padding: 20px;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 25;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+  text-align: left;
+}
+
+#fallbackCard.show {
+  display: flex;
+}
+
+#fallbackCard h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+#fallbackCard p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+#fallbackCard code {
+  background: #090d16;
+  border: 1px solid var(--panel-border);
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-size: 11px;
+  color: #bae6fd;
+  word-break: break-all;
+}
+
+/* ===== 拖拽提示层 ===== */
+#dropHint {
+  position: absolute;
+  inset: 10px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--accent);
+  border-radius: 12px;
+  background: rgba(9, 13, 22, 0.55);
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 600;
+  z-index: 28;
+  pointer-events: none;
+}
+
+#dropHint.show {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  #app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  aside {
+    max-height: 40vh;
+    border-right: 0;
+    border-bottom: 1px solid var(--panel-border);
+    padding: 10px;
+  }
+  #help {
+    left: 8px;
+    bottom: 8px;
+    max-width: 50%;
+    font-size: 9px;
+  }
+  #mobilePad {
+    display: grid;
+  }
+  #transformPanel {
+    right: 8px;
+    top: 55px;
+    width: 200px;
+  }
+  #sceneChip {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+<div id="app">
+<aside>
+<header>
+  <div>
+    <h1>🏢 虚拟卖场 Pro</h1>
+    <p>Retail Studio Ultra · 场景集成版</p>
+  </div>
+  <button id="resetView" title="重置相机视角">重置视角</button>
+</header>
+
+<!-- 01 · 场景与地面材质自定义 -->
+<details class="section" open>
+  <summary>01 · 材质与地面设置 <span>▼</span></summary>
+  <div class="sec-body">
+    <label class="small">地面材质纹理</label>
+    <select id="floorTextureSelect">
+      <option value="wood">原木木地板</option>
+      <option value="marble">爵士白大理石</option>
+      <option value="concrete">工业微水泥</option>
+      <option value="tiles">高光黑色瓷砖</option>
+      <option value="carpet">深灰色地毯</option>
+    </select>
+    <div class="row">
+      <label class="small">地面粗糙度 <strong id="floorRoughVal">0.30</strong></label>
+      <input id="floorRoughness" type="range" min="0" max="1" step="0.05" value="0.3">
+    </div>
+    <div class="row">
+      <label class="small">地面金属性/反射 <strong id="floorMetalVal">0.10</strong></label>
+      <input id="floorMetalness" type="range" min="0" max="1" step="0.05" value="0.1">
+    </div>
+    <label class="filebtn">
+      📁 导入 GLB 空间大场景
+      <input id="spaceFile" type="file" accept=".glb,.gltf">
+    </label>
+    <div class="row">
+      <button id="fitView">空间居中</button>
+      <button id="clearSpace" class="danger">移除空间模型</button>
+    </div>
+  </div>
+</details>
+
+<!-- 02 · 预设陈列物库 -->
+<details class="section" open>
+  <summary>02 · 零售陈列组件库 <span>▼</span></summary>
+  <div class="sec-body">
+    <div class="grid-2">
+      <button id="addRack">👚 服装挂架</button>
+      <button id="addCabinet">💎 玻璃展柜</button>
+      <button id="addMannequin">🧍 模特人台</button>
+      <button id="addCashier">💳 科技收银台</button>
+      <button id="addSofa">🛋️ 歇息沙发</button>
+      <button id="addPodium">🪜 高低展示台</button>
+    </div>
+    <div class="row">
+      <button id="batchHangClothes" class="accent">👕 批量挂衣/摆放衣物</button>
+    </div>
+    <div class="row">
+      <label class="filebtn">
+        📦 自定义 3D (GLB/OBJ)
+        <input id="assetFile" type="file" accept=".glb,.gltf,.obj">
+      </label>
+      <label class="filebtn">
+        🖼️ 海报贴图
+        <input id="imageFile" type="file" accept="image/*">
+      </label>
+    </div>
+    <div id="objectList" class="objectlist"><div class="hint">尚未添加陈列物件</div></div>
+  </div>
+</details>
+
+<!-- 03 · 智能吸附与移动步进 -->
+<details class="section">
+  <summary>03 · 对齐与对齐吸附 <span>▼</span></summary>
+  <div class="sec-body">
+    <div class="row">
+      <button id="toggleSnap" class="active">🧲 网格吸附: 开</button>
+      <select id="snapSizeSelect">
+        <option value="0.05" selected>吸附精度: 0.05m (精细)</option>
+        <option value="0.1">吸附精度: 0.10m</option>
+        <option value="0.25">吸附精度: 0.25m</option>
+        <option value="0.5">吸附精度: 0.50m</option>
+      </select>
+    </div>
+    <div class="row">
+      <button id="cloneSelected" class="accent">📋 复制当前选中物件</button>
+    </div>
+    <div class="row">
+      <button id="swapClothesBtn">🔄 调换选中/指定衣物位置</button>
+    </div>
+  </div>
+</details>
+
+<!-- 04 · 氛围灯光预设 -->
+<details class="section">
+  <summary>04 · 光影与氛围 Modes <span>▼</span></summary>
+  <div class="sec-body">
+    <label class="small">环境灯光预设</label>
+    <div class="grid-2">
+      <button class="presetBtn" data-preset="daylight">☀️ 阳光卖场</button>
+      <button class="presetBtn" data-preset="neon">🌃 赛博霓虹</button>
+      <button class="presetBtn" data-preset="warm">🕯️ 暖光精品店</button>
+      <button class="presetBtn" data-preset="industrial">🏭 工业冷调</button>
+    </div>
+    <div class="row" style="margin-top:4px;">
+      <button id="addSpotLight" class="accent">＋ 聚光灯</button>
+      <button id="addPointLight" class="accent">＋ 点光源</button>
+    </div>
+    <div class="row">
+      <button id="toggleShadows" class="active">🌑 实时阴影: 开</button>
+      <button id="toggleGrid" class="active">📐 参考网格: 开</button>
+    </div>
+  </div>
+</details>
+
+<!-- 05 · 镜头书签与导览点 -->
+<details class="section">
+  <summary>05 · 镜头视角导览 <span>▼</span></summary>
+  <div class="sec-body">
+    <div class="grid-2">
+      <button class="camCamBtn" data-cam="entrance">🚪 卖场入口</button>
+      <button class="camCamBtn" data-cam="center">🎯 中央主展区</button>
+      <button class="camCamBtn" data-cam="cashier">💳 收银结算区</button>
+      <button class="camCamBtn" data-cam="top">🦅 鸟瞰全景</button>
+    </div>
+    <div class="row">
+      <button id="orbitMode" class="active">🔄 轨道模式</button>
+      <button id="walkMode">🚶 漫游模式</button>
+    </div>
+  </div>
+</details>
+
+<!-- 06 · 导出与管理 -->
+<details class="section">
+  <summary>06 · 导出与编辑 <span>▼</span></summary>
+  <div class="sec-body">
+    <button id="exportScene" class="primary">💾 导出完整 3D 场景 (.glb)</button>
+    <div class="row">
+      <button id="moveMode" class="active">拖拽移动: 开</button>
+      <button id="deleteSelected" class="danger">🗑️ 删除选中</button>
+    </div>
+  </div>
+</details>
+
+<div class="foot">虚拟三维卖场 Pro · HTML5 Single File Edition · 场景集成版</div>
+</aside>
+
+<main id="viewport">
+  <div id="topbar">
+    <div class="topbar-left">
+      <div id="status">系统准备就绪 · 正在尝试自动载入零售卖场场景…</div>
+      <div id="sceneChip"></div>
+    </div>
+    <div class="toolbar">
+      <button id="fullscreen">全屏</button>
+      <button id="screenshot">📸 截图</button>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <div id="dimBadge"></div>
+
+  <!-- 选中物件变换与材质面板 -->
+  <div id="transformPanel">
+    <h3><span id="selectedTitle">选中物件</span> <button id="closePanel">✕</button></h3>
+
+    <!-- 材质修改 (Mesh 专享) -->
+    <div id="matEditGroup" style="display:none; flex-direction:column; gap:4px; border-bottom:1px solid var(--panel-border); padding-bottom:8px;">
+      <label class="small">材质颜色 <input id="objColor" type="color" value="#ffffff"></label>
+      <div class="row">
+        <label class="small">粗糙度 <strong id="objRoughVal">0.5</strong></label>
+        <input id="objRoughness" type="range" min="0" max="1" step="0.05" value="0.5">
+      </div>
+      <div class="row">
+        <label class="small">金属性 <strong id="objMetalVal">0.1</strong></label>
+        <input id="objMetalness" type="range" min="0" max="1" step="0.05" value="0.1">
+      </div>
+    </div>
+
+    <!-- 光源设置专享 -->
+    <div id="lightSettingsGroup" style="display:none; flex-direction:column; gap:4px; border-bottom:1px solid var(--panel-border); padding-bottom:8px;">
+      <label class="small">灯光颜色 <input id="lightColor" type="color" value="#ffffff"></label>
+      <label class="small">强度 <strong id="lightIntensityVal">3.0</strong></label>
+      <input id="lightIntensity" type="range" min="0" max="20" step="0.5" value="3">
+      <label class="small">照亮距离 <strong id="lightDistanceVal">15</strong></label>
+      <input id="lightDistance" type="range" min="1" max="50" step="1" value="15">
+    </div>
+
+    <div class="row" style="margin-top:4px;">
+      <button id="panelSwapClothesBtn" style="width:100%; border-color: var(--accent);">🔄 调换选中物件与另一衣物位置</button>
+    </div>
+
+    <div class="hint">微调位置与旋转 (小步进)：</div>
+    <div class="t-grid">
+      <button data-act="forward">↑ 前</button>
+      <button data-act="left">← 左</button>
+      <button data-act="right">→ 右</button>
+      <button data-act="back">↓ 后</button>
+      <button data-act="up">＋ 上</button>
+      <button data-act="down">－ 下</button>
+    </div>
+    <div class="row">
+      <button data-act="rotL">↺ 左转 15°</button>
+      <button data-act="rotR">↻ 右转 15°</button>
+    </div>
+  </div>
+
+  <div id="help">💡 操作提示：点击并拖拽 3D 物件快速摆放。按 WASD 或方向键漫游。</div>
+
+  <div id="mobilePad">
+    <span></span><button data-move="forward">↑</button><span></span>
+    <button data-move="left">←</button><button data-move="back">↓</button><button data-move="right">→</button>
+  </div>
+
+  <!-- 场景载入进度层 -->
+  <div id="loadOverlay">
+    <div class="load-card">
+      <div class="load-title">正在载入零售卖场场景</div>
+      <div class="load-file" id="loadFileName">RetailStudio_Scene_1792551857526.glb</div>
+      <div class="load-bar"><div id="loadBarFill"></div></div>
+      <div class="load-meta">
+        <span id="loadPercent">0%</span>
+        <span id="loadPhase" style="display:flex; align-items:center; gap:6px;"><span class="spin"></span><span id="loadPhaseText">读取文件…</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手动选择场景卡片 -->
+  <div id="fallbackCard">
+    <h3>📁 未自动找到场景文件</h3>
+    <p>页面是以本地方式直接打开的，浏览器不允许网页自动读取同目录文件。请选择同目录下的场景文件完成载入；也可以把 HTML 与 GLB 放在同一文件夹、用本地服务打开，即可自动加载。</p>
+    <p>期望文件：<code>RetailStudio_Scene_1792551857526.glb</code></p>
+    <label class="filebtn big">📂 选择场景文件载入
+      <input id="autoPickFile" type="file" accept=".glb,.gltf">
+    </label>
+    <p class="hint">提示：也可以直接把 .glb / .gltf 文件拖入 3D 视口完成载入。</p>
+  </div>
+
+  <div id="dropHint">松开以载入该场景文件</div>
+</main>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+// ---- 全局 DOM 引用 ----
+const host = document.querySelector('#viewport');
+const status = document.querySelector('#status');
+const toast = document.querySelector('#toast');
+const dimBadge = document.querySelector('#dimBadge');
+const transformPanel = document.querySelector('#transformPanel');
+
+// ---- 场景集成相关 DOM ----
+const loadOverlay = document.querySelector('#loadOverlay');
+const loadBarFill = document.querySelector('#loadBarFill');
+const loadPercent = document.querySelector('#loadPercent');
+const loadPhaseText = document.querySelector('#loadPhaseText');
+const loadFileName = document.querySelector('#loadFileName');
+const fallbackCard = document.querySelector('#fallbackCard');
+const sceneChip = document.querySelector('#sceneChip');
+const dropHint = document.querySelector('#dropHint');
+
+const SCENE_GLB = 'RetailStudio_Scene_1792551857526.glb';
+const DEFAULT_FOG = new THREE.Fog(0x090d16, 25, 100);
+const SCENE_FOG = new THREE.Fog(0x090d16, 45, 170);
+let gridAutoHidden = false;
+let pendingHideOverlay = false;
+
+function say(msg) {
+  status.textContent = msg;
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  clearTimeout(say.t);
+  say.t = setTimeout(() => toast.style.display = 'none', 2400);
+}
+
+function fmtSize(bytes) {
+  if (!bytes) return '?';
+  if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+  if (bytes >= 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return bytes + ' B';
+}
+
+function showOverlay(name) {
+  loadFileName.textContent = name || SCENE_GLB;
+  setLoadProgress(0, '读取文件…');
+  loadOverlay.classList.add('show');
+}
+
+function setLoadProgress(p, phaseText) {
+  const pc = Math.max(0, Math.min(100, Math.round(p * 100)));
+  loadBarFill.style.width = pc + '%';
+  loadPercent.textContent = pc + '%';
+  if (phaseText) loadPhaseText.textContent = phaseText;
+}
+
+function hideOverlay() {
+  loadOverlay.classList.remove('show');
+  pendingHideOverlay = false;
+}
+
+function showFallback() {
+  fallbackCard.classList.add('show');
+}
+
+function hideFallback() {
+  fallbackCard.classList.remove('show');
+}
+
+async function fetchWithProgress(url, onProgress) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  const total = Number(resp.headers.get('Content-Length')) || 0;
+  const reader = resp.body.getReader();
+  const chunks = [];
+  let received = 0;
+  for (;;) {
+    const r = await reader.read();
+    if (r.done) break;
+    chunks.push(r.value);
+    received += r.value.byteLength;
+    if (total) onProgress(received / total);
+  }
+  const buf = new Uint8Array(received);
+  let off = 0;
+  for (const c of chunks) { buf.set(c, off); off += c.byteLength; }
+  return buf.buffer;
+}
+
+// ---- 程序化纹理生成器 ----
+function createCanvasTexture(type) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  if (type === 'wood') {
+    ctx.fillStyle = '#7a5230';
+    ctx.fillRect(0, 0, 512, 512);
+    ctx.fillStyle = '#5c3d23';
+    for (let i = 0; i < 512; i += 32) {
+      ctx.fillRect(i, 0, 2, 512);
+      ctx.fillRect(0, i, 512, 1);
+    }
+    for (let i = 0; i < 150; i++) {
+      ctx.fillStyle = 'rgba(0,0,0,0.05)';
+      ctx.fillRect(Math.random()*512, 0, Math.random()*4+1, 512);
+    }
+  } else if (type === 'marble') {
+    ctx.fillStyle = '#e8ecef';
+    ctx.fillRect(0, 0, 512, 512);
+    ctx.strokeStyle = '#b0bec5';
+    ctx.lineWidth = 3;
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath();
+      ctx.moveTo(Math.random()*512, 0);
+      ctx.bezierCurveTo(Math.random()*512, 170, Math.random()*512, 340, Math.random()*512, 512);
+      ctx.stroke();
+    }
+  } else if (type === 'concrete') {
+    ctx.fillStyle = '#4a5568';
+    ctx.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 2000; i++) {
+      ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.08)';
+      ctx.fillRect(Math.random()*512, Math.random()*512, 2, 2);
+    }
+  } else if (type === 'tiles') {
+    ctx.fillStyle = '#111827';
+    ctx.fillRect(0, 0, 512, 512);
+    ctx.strokeStyle = '#374151';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(0, 0, 512, 512);
+    ctx.strokeRect(256, 0, 256, 512);
+    ctx.strokeRect(0, 256, 512, 256);
+  } else if (type === 'carpet') {
+    ctx.fillStyle = '#2d3748';
+    ctx.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 4000; i++) {
+      ctx.fillStyle = Math.random() > 0.5 ? '#3a4a5e' : '#1a202c';
+      ctx.fillRect(Math.random()*512, Math.random()*512, 2, 2);
+    }
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(12, 12);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+// ---- Three.js 核心场景构建 ----
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x090d16);
+scene.fog = DEFAULT_FOG.clone();
+
+const camera = new THREE.PerspectiveCamera(60, 1, 0.05, 1000);
+camera.position.set(9, 7, 11);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+host.insertBefore(renderer.domElement, host.firstChild);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.target.set(0, 1, 0);
+controls.maxDistance = 120;
+controls.minDistance = 0.3;
+
+// 主照明与阳光
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x222936, 0.8);
+scene.add(hemiLight);
+
+const dirLight = new THREE.DirectionalLight(0xfffaed, 1.8);
+dirLight.position.set(15, 25, 12);
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.width = 2048;
+dirLight.shadow.mapSize.height = 2048;
+dirLight.shadow.camera.near = 0.5;
+dirLight.shadow.camera.far = 80;
+const d = 25;
+dirLight.shadow.camera.left = -d;
+dirLight.shadow.camera.right = d;
+dirLight.shadow.camera.top = d;
+dirLight.shadow.camera.bottom = -d;
+scene.add(dirLight);
+
+// 参考辅助网格
+const grid = new THREE.GridHelper(80, 80, 0x38bdf8, 0x232d3f);
+grid.position.y = 0;
+scene.add(grid);
+
+function updateGridUI() {
+  const btn = document.querySelector('#toggleGrid');
+  btn.classList.toggle('active', grid.visible);
+  btn.textContent = grid.visible ? '📐 参考网格: 开' : '📐 参考网格: 关';
+}
+
+// 可换材质的地板 Mesh
+const floorMat = new THREE.MeshStandardMaterial({
+  map: createCanvasTexture('wood'),
+  roughness: 0.3,
+  metalness: 0.1
+});
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(160, 160), floorMat);
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -0.01;
+floor.receiveShadow = true;
+floor.name = '__floor';
+scene.add(floor);
+
+// Raycaster & 状态管理变量
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let space = null;
+let selected = null;
+let hoveredObj = null;
+let dragging = null;
+let isSwapMode = false;
+let swapSourceObj = null;
+const dragPlane = new THREE.Plane();
+const planeIntersectPoint = new THREE.Vector3();
+const dragOffset = new THREE.Vector3();
+
+let moveEnabled = true;
+let snapEnabled = true;
+let snapSize = 0.05; // 默认精细步长 0.05m
+let walk = false;
+let walkKeys = {};
+const objects = [];
+
+const gltfLoader = new GLTFLoader();
+const objLoader = new OBJLoader();
+
+// ---- 窗口缩放适配 ----
+function resize() {
+  const w = host.clientWidth;
+  const h = host.clientHeight;
+  camera.aspect = w / Math.max(h, 1);
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h, false);
+}
+new ResizeObserver(resize).observe(host);
+resize();
+
+// ---- 地板材质与属性切换 ----
+document.querySelector('#floorTextureSelect').addEventListener('change', e => {
+  floorMat.map = createCanvasTexture(e.target.value);
+  floorMat.needsUpdate = true;
+  say('地面材质已更新');
+});
+
+document.querySelector('#floorRoughness').addEventListener('input', e => {
+  floorMat.roughness = +e.target.value;
+  document.querySelector('#floorRoughVal').textContent = (+e.target.value).toFixed(2);
+});
+
+document.querySelector('#floorMetalness').addEventListener('input', e => {
+  floorMat.metalness = +e.target.value;
+  document.querySelector('#floorMetalVal').textContent = (+e.target.value).toFixed(2);
+});
+
+// ---- 模型聚焦与对齐 ----
+function fitObject(root) {
+  const box = new THREE.Box3().setFromObject(root);
+  if (box.isEmpty()) return;
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  root.position.sub(center);
+  root.position.y -= box.min.y - center.y;
+  const max = Math.max(size.x, size.y, size.z);
+  controls.target.set(0, Math.max(size.y * 0.35, 0.7), 0);
+  camera.position.set(max * 1.2, max * 0.8, max * 1.3);
+  controls.update();
+}
+
+// ---- 场景应用与信息展示 ----
+function applySpaceScene(g, srcName, fileSize) {
+  if (space) scene.remove(space);
+  space = g.scene;
+  scene.add(space);
+  fitObject(space);
+
+  let meshCount = 0;
+  space.traverse(o => { if (o.isMesh) meshCount++; });
+
+  sceneChip.textContent = '🏬 ' + srcName.replace(/\.(glb|gltf)$/i, '') + ' · ' + fmtSize(fileSize) + ' · ' + meshCount + ' 网格';
+  sceneChip.style.display = 'inline-flex';
+
+  // 真实场景载入后自动隐藏参考网格，避免与场景地面重叠（可在面板手动重新开启）
+  if (grid.visible) {
+    grid.visible = false;
+    gridAutoHidden = true;
+    updateGridUI();
+  }
+  scene.fog = SCENE_FOG.clone();
+
+  hideFallback();
+  pendingHideOverlay = true; // 首帧渲染完成后隐藏载入层
+}
+
+function loadSpaceViaUrl(url, name, fileSize, onDone) {
+  showOverlay(name);
+  gltfLoader.load(url, g => {
+    applySpaceScene(g, name, fileSize);
+    say('零售卖场场景已载入：' + name);
+    if (onDone) onDone();
+  }, p => {
+    if (p.total) {
+      const ratio = p.loaded / p.total;
+      setLoadProgress(ratio, '读取文件 ' + Math.round(ratio * 100) + '%');
+    }
+  }, err => {
+    console.error(err);
+    hideOverlay();
+    say('模型加载失败，请确保格式正确');
+  });
+}
+
+function loadSpaceModel(file) {
+  const url = URL.createObjectURL(file);
+  loadSpaceViaUrl(url, file.name, file.size, () => URL.revokeObjectURL(url));
+}
+
+// ---- 自动载入同目录场景（本地服务打开时生效） ----
+async function tryAutoLoad() {
+  showOverlay(SCENE_GLB);
+  try {
+    const buf = await fetchWithProgress(SCENE_GLB, p => setLoadProgress(p, '读取文件 ' + Math.round(p * 100) + '%'));
+    setLoadProgress(1, '解析模型数据…');
+    await new Promise((resolve, reject) => {
+      gltfLoader.parse(buf, '', g => {
+        applySpaceScene(g, SCENE_GLB, buf.byteLength);
+        resolve();
+      }, reject);
+    });
+    say('零售卖场场景已自动载入：' + SCENE_GLB);
+  } catch (err) {
+    console.warn('自动载入未生效（本地 file:// 直接打开时属正常现象），转手动选择：', err);
+    hideOverlay();
+    showFallback();
+    say('未能自动读取场景文件，请点击选择 GLB 手动载入');
+  }
+}
+
+// ---- 场景文件导入入口 ----
+document.querySelector('#spaceFile').addEventListener('change', e => {
+  if (e.target.files[0]) loadSpaceModel(e.target.files[0]);
+  e.target.value = '';
+});
+
+document.querySelector('#autoPickFile').addEventListener('change', e => {
+  if (e.target.files[0]) loadSpaceModel(e.target.files[0]);
+  e.target.value = '';
+});
+
+// ---- 拖拽载入场景 ----
+host.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropHint.classList.add('show');
+});
+host.addEventListener('dragleave', e => {
+  if (e.relatedTarget && host.contains(e.relatedTarget)) return;
+  dropHint.classList.remove('show');
+});
+host.addEventListener('drop', e => {
+  e.preventDefault();
+  dropHint.classList.remove('show');
+  const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if (!f) return;
+  const ext = f.name.split('.').pop().toLowerCase();
+  if (ext !== 'glb' && ext !== 'gltf') { say('仅支持 .glb / .gltf 场景文件'); return; }
+  loadSpaceModel(f);
+});
+
+// ---- 通用陈列物件添加 ----
+function addObject(root, name, customPos = null) {
+  root.userData.displayName = name;
+  root.userData.isRetailAsset = true;
+  root.traverse(o => {
+    if (o.isMesh) {
+      o.castShadow = true;
+      o.receiveShadow = true;
+      if (o.material) o.material.side = THREE.DoubleSide;
+    }
+  });
+
+  const box = new THREE.Box3().setFromObject(root);
+  if (!box.isEmpty()) {
+    const center = box.getCenter(new THREE.Vector3());
+    root.position.x -= center.x;
+    root.position.z -= center.z;
+    root.position.y -= box.min.y;
+  }
+
+  if (customPos) {
+    root.position.copy(customPos);
+  } else {
+    // 智能网格对齐初始位置
+    let initX = (Math.random() - 0.5) * 2;
+    let initZ = (Math.random() - 0.5) * 2;
+    if (snapEnabled) {
+      initX = Math.round(initX / snapSize) * snapSize;
+      initZ = Math.round(initZ / snapSize) * snapSize;
+    }
+    root.position.x = initX;
+    root.position.z = initZ;
+  }
+
+  scene.add(root);
+  objects.push(root);
+  select(root);
+  renderList();
+}
+
+// 外部 3D / 图片导入
+document.querySelector('#assetFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  const done = root => {
+    URL.revokeObjectURL(url);
+    addObject(root, file.name);
+    say('已成功导入：' + file.name);
+  };
+
+  if (ext === 'obj') {
+    objLoader.load(url, done);
+  } else {
+    gltfLoader.load(url, g => done(g.scene));
+  }
+  e.target.value = '';
+});
+
+document.querySelector('#imageFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  const tex = new THREE.TextureLoader().load(url, () => URL.revokeObjectURL(url));
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.MeshStandardMaterial({ map: tex, transparent: true, side: THREE.DoubleSide });
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 1.6), mat);
+  plane.position.y = 0.8;
+  plane.userData.displayName = '海报: ' + file.name;
+  plane.userData.isRetailAsset = true;
+  addObject(plane, file.name);
+  e.target.value = '';
+});
+
+// ---- 程序化生成衣物模型 ----
+function createGarmentModel(colorHex, label) {
+  const g = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.6 });
+  const hangerMat = new THREE.MeshStandardMaterial({ color: 0x9ca3af, metalness: 0.8, roughness: 0.2 });
+
+  // 衣架
+  const hanger = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.45, 8), hangerMat);
+  hanger.rotation.z = Math.PI / 2;
+  hanger.position.y = 1.65;
+
+  // 上衣主体
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.7, 0.12), mat);
+  body.position.y = 1.25;
+
+  // 袖子
+  const sleeveL = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.35, 0.1), mat);
+  sleeveL.position.set(-0.25, 1.38, 0);
+  sleeveL.rotation.z = 0.2;
+
+  const sleeveR = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.35, 0.1), mat);
+  sleeveR.position.set(0.25, 1.38, 0);
+  sleeveR.rotation.z = -0.2;
+
+  g.add(hanger, body, sleeveL, sleeveR);
+  g.userData.isCloth = true;
+  return g;
+}
+
+// 批量陈列摆放衣物
+function batchHangGarments(count = 5) {
+  const colors = [0xef4444, 0x3b82f6, 0x10b981, 0xf59e0b, 0x8b5cf6, 0xec4899, 0x06b6d4];
+  const startX = -((count - 1) * 0.35) / 2;
+
+  for (let i = 0; i < count; i++) {
+    const c = colors[i % colors.length];
+    const item = createGarmentModel(c, `陈列衣物 #${i + 1}`);
+    const pos = new THREE.Vector3(startX + i * 0.35, 0, (Math.random() - 0.5) * 1.5);
+    addObject(item, `挂件衣物 ${i + 1}`, pos);
+  }
+  say(`已成功批量摆放 ${count} 件衣物！`);
+}
+
+document.querySelector('#batchHangClothes').onclick = () => batchHangGarments(5);
+
+// 交换衣物位置逻辑
+function startSwapProcess() {
+  if (!selected) {
+    say('请先选择需要调换位置的一件衣物/物件');
+    return;
+  }
+  swapSourceObj = selected;
+  isSwapMode = true;
+  say('调换模式：请点击场景中的【第二件衣物】完成对调');
+}
+
+function swapObjectPositions(objA, objB) {
+  if (!objA || !objB || objA === objB) return;
+  const tempPos = objA.position.clone();
+  const tempRot = objA.rotation.clone();
+
+  objA.position.copy(objB.position);
+  objA.rotation.copy(objB.rotation);
+
+  objB.position.copy(tempPos);
+  objB.rotation.copy(tempRot);
+
+  const h = scene.getObjectByName('__selection');
+  if (h) h.update();
+
+  say(`已成功调换 [${objA.userData.displayName || '物件A'}] 与 [${objB.userData.displayName || '物件B'}] 的位置`);
+}
+
+document.querySelector('#swapClothesBtn').onclick = startSwapProcess;
+document.querySelector('#panelSwapClothesBtn').onclick = startSwapProcess;
+
+// ---- 程序化丰富零售道具库构造 ----
+function buildRack() {
+  const g = new THREE.Group();
+  const m = new THREE.MeshStandardMaterial({ color: 0xd1d5db, metalness: 0.85, roughness: 0.2 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.5 });
+
+  const p1 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2, 0.05), m); p1.position.set(-0.8, 1, 0);
+  const p2 = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2, 0.05), m); p2.position.set(0.8, 1, 0);
+  const top = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.05, 0.05), m); top.position.set(0, 1.95, 0);
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.08, 0.6), dark); base.position.set(0, 0.04, 0);
+  g.add(p1, p2, top, base);
+  addObject(g, '服装挂衣架');
+}
+
+function buildCabinet() {
+  const g = new THREE.Group();
+  const wood = new THREE.MeshStandardMaterial({ color: 0x7c2d12, roughness: 0.4 });
+  const glass = new THREE.MeshStandardMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.35, roughness: 0.1 });
+
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.7, 0.7), wood); base.position.y = 0.35;
+  const top = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.05, 0.8), wood); top.position.y = 0.725;
+  const glassBody = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.75, 0.65), glass); glassBody.position.y = 1.125;
+  g.add(base, top, glassBody);
+  addObject(g, '双层精品展柜');
+}
+
+function buildMannequin() {
+  const g = new THREE.Group();
+  const whiteMat = new THREE.MeshStandardMaterial({ color: 0xf3f4f6, roughness: 0.3 });
+  const chrome = new THREE.MeshStandardMaterial({ color: 0x9ca3af, metalness: 0.9, roughness: 0.1 });
+
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.04, 32), chrome); base.position.y = 0.02;
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.1, 16), chrome); pole.position.y = 0.55;
+  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.15, 0.85, 16), whiteMat); torso.position.y = 1.25;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), whiteMat); head.position.y = 1.78;
+  g.add(base, pole, torso, head);
+  addObject(g, '时尚模特人台');
+}
+
+function buildCashier() {
+  const g = new THREE.Group();
+  const marble = new THREE.MeshStandardMaterial({ color: 0x374151, roughness: 0.2 });
+  const screenMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.1 });
+
+  const counter = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.05, 0.8), marble); counter.position.y = 0.525;
+  const screen = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.3, 0.05), screenMat); screen.position.set(0.3, 1.25, 0); screen.rotation.x = -0.2;
+  const stand = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.2), screenMat); stand.position.set(0.3, 1.1, 0);
+  g.add(counter, screen, stand);
+  addObject(g, '科技感收银台');
+}
+
+function buildSofa() {
+  const g = new THREE.Group();
+  const leather = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.7 });
+
+  const seat = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.35, 0.8), leather); seat.position.y = 0.25;
+  const back = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.55, 0.25), leather); back.position.set(0, 0.6, -0.3);
+  const armL = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.5, 0.85), leather); armL.position.set(-0.9, 0.45, 0);
+  const armR = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.5, 0.85), leather); armR.position.set(0.9, 0.45, 0);
+  g.add(seat, back, armL, armR);
+  addObject(g, '休息区皮革沙发');
+}
+
+function buildPodium() {
+  const g = new THREE.Group();
+  const mat1 = new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2, metalness: 0.1 });
+  const mat2 = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.2, metalness: 0.1 });
+
+  const p1 = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.3, 32), mat1); p1.position.set(-0.5, 0.15, 0);
+  const p2 = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.6, 32), mat2); p2.position.set(0.4, 0.3, 0);
+  g.add(p1, p2);
+  addObject(g, '高低展示台组合');
+}
+
+document.querySelector('#addRack').onclick = buildRack;
+document.querySelector('#addCabinet').onclick = buildCabinet;
+document.querySelector('#addMannequin').onclick = buildMannequin;
+document.querySelector('#addCashier').onclick = buildCashier;
+document.querySelector('#addSofa').onclick = buildSofa;
+document.querySelector('#addPodium').onclick = buildPodium;
+
+// ---- 复制/克隆选中物件 ----
+document.querySelector('#cloneSelected').onclick = () => {
+  if (!selected) return say('请先选中需要复制的物件');
+  const clone = selected.clone(true);
+  clone.position.x += snapEnabled ? snapSize : 0.1;
+  clone.position.z += snapEnabled ? snapSize : 0.1;
+  clone.userData.displayName = (selected.userData.displayName || '物件') + ' (副本)';
+  scene.add(clone);
+  objects.push(clone);
+  select(clone);
+  renderList();
+  say('已成功复制物件');
+};
+
+// ---- 吸附控制 ----
+document.querySelector('#toggleSnap').onclick = e => {
+  snapEnabled = !snapEnabled;
+  e.currentTarget.classList.toggle('active', snapEnabled);
+  e.currentTarget.textContent = snapEnabled ? '🧲 网格吸附: 开' : '🧲 网格吸附: 关';
+};
+
+document.querySelector('#snapSizeSelect').addEventListener('change', e => {
+  snapSize = parseFloat(e.target.value);
+  say('移动步进/吸附间距设置为 ' + snapSize + 'm');
+});
+
+// ---- 灯光 Preset 烘托模式 ----
+const presets = {
+  daylight: { ambient: 0.9, dir: 2.0, color: 0xfffaed, fog: 0x090d16 },
+  neon: { ambient: 0.3, dir: 0.5, color: 0x38bdf8, fog: 0x0f172a },
+  warm: { ambient: 0.7, dir: 1.5, color: 0xfde68a, fog: 0x1c1917 },
+  industrial: { ambient: 0.5, dir: 1.2, color: 0x93c5fd, fog: 0x111827 }
+};
+
+document.querySelectorAll('.presetBtn').forEach(btn => {
+  btn.onclick = () => {
+    const p = presets[btn.dataset.preset];
+    if (!p) return;
+    hemiLight.intensity = p.ambient;
+    dirLight.intensity = p.dir;
+    dirLight.color.setHex(p.color);
+    scene.fog.color.setHex(p.fog);
+    scene.background.setHex(p.fog);
+    say('场景氛围模式切换为：' + btn.textContent);
+  };
+});
+
+// 添加动态自定义光源
+function addSceneLight(type) {
+  const group = new THREE.Group();
+  group.userData.isRetailAsset = true;
+  group.userData.isLightAsset = true;
+  group.userData.lightType = type;
+
+  let light;
+  if (type === 'spot') {
+    light = new THREE.SpotLight(0xfff5e6, 4, 20, Math.PI / 4, 0.5, 1);
+    light.position.set(0, 0, 0);
+    light.target.position.set(0, -3, 0);
+    light.castShadow = true;
+    group.add(light, light.target);
+    group.userData.displayName = '聚光灯 Spot';
+  } else {
+    light = new THREE.PointLight(0xfff5e6, 3, 15, 2);
+    light.position.set(0, 0, 0);
+    light.castShadow = true;
+    group.add(light);
+    group.userData.displayName = '点光源 Point';
+  }
+  group.userData.lightRef = light;
+
+  const bulbMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(0.08, 16, 16),
+    new THREE.MeshBasicMaterial({ color: 0xffeaad })
+  );
+  bulbMesh.name = '__bulb';
+  group.add(bulbMesh);
+
+  group.position.set((Math.random() - 0.5) * 3, 3.2, (Math.random() - 0.5) * 3);
+  scene.add(group);
+  objects.push(group);
+  select(group);
+  renderList();
+}
+
+document.querySelector('#addSpotLight').onclick = () => addSceneLight('spot');
+document.querySelector('#addPointLight').onclick = () => addSceneLight('point');
+
+document.querySelector('#toggleShadows').onclick = e => {
+  renderer.shadowMap.enabled = !renderer.shadowMap.enabled;
+  e.currentTarget.classList.toggle('active', renderer.shadowMap.enabled);
+  e.currentTarget.textContent = renderer.shadowMap.enabled ? '🌑 实时阴影: 开' : '🌑 实时阴影: 关';
+  say('阴影渲染已' + (renderer.shadowMap.enabled ? '开启' : '关闭'));
+};
+
+document.querySelector('#toggleGrid').onclick = e => {
+  grid.visible = !grid.visible;
+  gridAutoHidden = false;
+  updateGridUI();
+  say('参考网格已' + (grid.visible ? '开启' : '关闭'));
+};
+
+// ---- 视角导览书签动画 ----
+const camBookmarks = {
+  entrance: { pos: new THREE.Vector3(0, 2.5, 12), target: new THREE.Vector3(0, 1, 0) },
+  center: { pos: new THREE.Vector3(5, 4, 5), target: new THREE.Vector3(0, 0.8, 0) },
+  cashier: { pos: new THREE.Vector3(-4, 3, 4), target: new THREE.Vector3(-2, 1, -1) },
+  top: { pos: new THREE.Vector3(0, 28, 0.1), target: new THREE.Vector3(0, 0, 0) }
+};
+
+let camTween = null;
+document.querySelectorAll('.camCamBtn').forEach(btn => {
+  btn.onclick = () => {
+    const mark = camBookmarks[btn.dataset.cam];
+    if (!mark) return;
+    const startPos = camera.position.clone();
+    const startTarget = controls.target.clone();
+    let t = 0;
+
+    if (camTween) clearInterval(camTween);
+    camTween = setInterval(() => {
+      t += 0.05;
+      if (t >= 1) {
+        t = 1;
+        clearInterval(camTween);
+      }
+      camera.position.lerpVectors(startPos, mark.pos, t);
+      controls.target.lerpVectors(startTarget, mark.target, t);
+      controls.update();
+    }, 16);
+    say('镜头定位至：' + btn.textContent);
+  };
+});
+
+// ---- 选择与属性修改 ----
+function clearSelectionHelper() {
+  // 先收集再移除：避免在 scene.traverse 遍历中修改子节点数组引发越界
+  const toRemove = [];
+  scene.traverse(o => { if (o.name === '__selection') toRemove.push(o); });
+  toRemove.forEach(o => scene.remove(o));
+}
+
+function select(obj) {
+  selected = obj;
+  clearSelectionHelper();
+
+  const matEditGroup = document.querySelector('#matEditGroup');
+  const lightSettingsGroup = document.querySelector('#lightSettingsGroup');
+
+  if (obj) {
+    const helper = new THREE.BoxHelper(obj, 0x38bdf8);
+    helper.name = '__selection';
+    scene.add(helper);
+
+    document.querySelector('#selectedTitle').textContent = obj.userData.displayName || '选中物件';
+    transformPanel.style.display = 'flex';
+
+    if (obj.userData.isLightAsset) {
+      matEditGroup.style.display = 'none';
+      lightSettingsGroup.style.display = 'flex';
+      const l = obj.userData.lightRef;
+      document.querySelector('#lightColor').value = '#' + l.color.getHexString();
+      document.querySelector('#lightIntensity').value = l.intensity;
+      document.querySelector('#lightIntensityVal').textContent = l.intensity.toFixed(1);
+      document.querySelector('#lightDistance').value = l.distance;
+      document.querySelector('#lightDistanceVal').textContent = l.distance;
+    } else {
+      lightSettingsGroup.style.display = 'none';
+      matEditGroup.style.display = 'flex';
+    }
+  } else {
+    transformPanel.style.display = 'none';
+  }
+  renderList();
+}
+
+// 修改选中 Mesh 材质
+document.querySelector('#objColor').addEventListener('input', e => {
+  if (!selected) return;
+  selected.traverse(o => {
+    if (o.isMesh && o.material && !o.userData.isLightAsset) {
+      o.material.color.set(e.target.value);
+    }
+  });
+});
+
+document.querySelector('#objRoughness').addEventListener('input', e => {
+  const v = +e.target.value;
+  document.querySelector('#objRoughVal').textContent = v.toFixed(2);
+  if (!selected) return;
+  selected.traverse(o => {
+    if (o.isMesh && o.material) o.material.roughness = v;
+  });
+});
+
+document.querySelector('#objMetalness').addEventListener('input', e => {
+  const v = +e.target.value;
+  document.querySelector('#objMetalVal').textContent = v.toFixed(2);
+  if (!selected) return;
+  selected.traverse(o => {
+    if (o.isMesh && o.material) o.material.metalness = v;
+  });
+});
+
+// 修改选中光源参数
+document.querySelector('#lightColor').addEventListener('input', e => {
+  if (selected && selected.userData.isLightAsset) {
+    selected.userData.lightRef.color.set(e.target.value);
+    const bulb = selected.getObjectByName('__bulb');
+    if (bulb) bulb.material.color.set(e.target.value);
+  }
+});
+document.querySelector('#lightIntensity').addEventListener('input', e => {
+  const v = +e.target.value;
+  document.querySelector('#lightIntensityVal').textContent = v.toFixed(1);
+  if (selected && selected.userData.isLightAsset) selected.userData.lightRef.intensity = v;
+});
+document.querySelector('#lightDistance').addEventListener('input', e => {
+  const v = +e.target.value;
+  document.querySelector('#lightDistanceVal').textContent = v;
+  if (selected && selected.userData.isLightAsset) selected.userData.lightRef.distance = v;
+});
+
+function renderList() {
+  const list = document.querySelector('#objectList');
+  list.innerHTML = '';
+  if (!objects.length) {
+    list.innerHTML = '<div class="hint">尚未添加陈列物件</div>';
+    return;
+  }
+  objects.forEach((o, i) => {
+    const row = document.createElement('div');
+    row.className = 'objitem' + (selected === o ? ' selected' : '');
+    const sp = document.createElement('span');
+    sp.textContent = o.userData.displayName || '物件 ' + (i + 1);
+    const btn = document.createElement('button');
+    btn.textContent = '定位';
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      select(o);
+      controls.target.copy(o.position);
+      camera.position.set(o.position.x + 3, o.position.y + 2.5, o.position.z + 4);
+      controls.update();
+    };
+    row.onclick = () => select(o);
+    row.append(sp, btn);
+    list.append(row);
+  });
+}
+
+document.querySelector('#closePanel').onclick = () => transformPanel.style.display = 'none';
+
+transformPanel.querySelectorAll('[data-act]').forEach(btn => {
+  const act = btn.dataset.act;
+  btn.onclick = () => {
+    if (!selected) return say('请先选中目标');
+    const step = snapEnabled ? snapSize : 0.05; // 微调按钮采用小步进
+    const rotStep = Math.PI / 12;
+    if (act === 'forward') selected.position.z -= step;
+    if (act === 'back') selected.position.z += step;
+    if (act === 'left') selected.position.x -= step;
+    if (act === 'right') selected.position.x += step;
+    if (act === 'up') selected.position.y += step;
+    if (act === 'down') selected.position.y = Math.max(0, selected.position.y - step);
+    if (act === 'rotL') selected.rotation.y += rotStep;
+    if (act === 'rotR') selected.rotation.y -= rotStep;
+    const h = scene.getObjectByName('__selection');
+    if (h) h.update();
+  };
+});
+
+// ---- 清除/删除操作 ----
+document.querySelector('#clearSpace').onclick = () => {
+  if (space) {
+    scene.remove(space);
+    space = null;
+    sceneChip.style.display = 'none';
+    scene.fog = DEFAULT_FOG.clone();
+    if (gridAutoHidden) {
+      grid.visible = true;
+      gridAutoHidden = false;
+      updateGridUI();
+    }
+    say('建筑空间已移除');
+  }
+};
+
+document.querySelector('#fitView').onclick = () => {
+  if (!space) return say('请先载入空间模型');
+  fitObject(space);
+  say('空间已居中');
+};
+
+document.querySelector('#resetView').onclick = () => {
+  camera.position.set(9, 7, 11);
+  controls.target.set(0, 1, 0);
+  controls.update();
+  say('相机视角已重置');
+};
+
+document.querySelector('#deleteSelected').onclick = () => {
+  if (!selected) return say('未选中物件');
+  scene.remove(selected);
+  const idx = objects.indexOf(selected);
+  if (idx >= 0) objects.splice(idx, 1);
+  select(null);
+  renderList();
+  say('物件已删除');
+};
+
+// ---- 全场景 GLB 导出 ----
+document.querySelector('#exportScene').onclick = () => {
+  say('正在打包导出场景 GLB，请稍候...');
+  select(null);
+
+  const exportGroup = new THREE.Group();
+  if (space) exportGroup.add(space.clone());
+  objects.forEach(o => exportGroup.add(o.clone()));
+
+  const exporter = new GLTFExporter();
+  exporter.parse(exportGroup, gltf => {
+    let blob;
+    if (gltf instanceof ArrayBuffer) {
+      blob = new Blob([gltf], { type: 'application/octet-stream' });
+    } else {
+      blob = new Blob([JSON.stringify(gltf, null, 2)], { type: 'text/plain' });
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'RetailStudio_Scene_' + Date.now() + '.glb';
+    a.click();
+    URL.revokeObjectURL(url);
+    say('完整 3D 场景导出成功！');
+  }, err => {
+    console.error(err);
+    say('导出失败');
+  }, { binary: true });
+};
+
+// 模式与漫游控制
+document.querySelector('#moveMode').onclick = e => {
+  moveEnabled = !moveEnabled;
+  e.currentTarget.classList.toggle('active', moveEnabled);
+  e.currentTarget.textContent = moveEnabled ? '拖拽移动: 开' : '拖拽移动: 关';
+};
+
+document.querySelector('#orbitMode').onclick = () => {
+  walk = false;
+  controls.enabled = true;
+  document.querySelector('#orbitMode').classList.add('active');
+  document.querySelector('#walkMode').classList.remove('active');
+  say('切换为轨道查看模式');
+};
+
+document.querySelector('#walkMode').onclick = () => {
+  walk = true;
+  controls.enabled = false;
+  document.querySelector('#walkMode').classList.add('active');
+  document.querySelector('#orbitMode').classList.remove('active');
+  say('第一人称漫游模式：WASD 或方向键移动');
+};
+
+document.querySelector('#fullscreen').onclick = () => {
+  if (document.fullscreenElement) document.exitFullscreen?.();
+  else document.documentElement.requestFullscreen?.();
+};
+
+document.querySelector('#screenshot').onclick = () => {
+  const a = document.createElement('a');
+  a.download = 'Store_View.png';
+  a.href = renderer.domElement.toDataURL('image/png');
+  a.click();
+  say('已捕获当前画面');
+};
+
+// ---- 鼠标交互与 Raycast 测量/高亮 ----
+function setPointer(ev) {
+  const r = renderer.domElement.getBoundingClientRect();
+  pointer.x = ((ev.clientX - r.left) / r.width) * 2 - 1;
+  pointer.y = -((ev.clientY - r.top) / r.height) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+}
+
+renderer.domElement.addEventListener('pointermove', e => {
+  setPointer(e);
+
+  // 1. 第一人称视角旋转
+  if (walk && e.buttons) {
+    camera.rotation.order = 'YXZ';
+    camera.rotation.y -= e.movementX * 0.003;
+    camera.rotation.x -= e.movementY * 0.003;
+    camera.rotation.x = Math.max(-1.3, Math.min(1.3, camera.rotation.x));
+  }
+
+  // 2. 拖拽物件移动 (网格吸附)
+  if (dragging) {
+    if (dragging.userData.isLightAsset) {
+      if (raycaster.ray.intersectPlane(dragPlane, planeIntersectPoint)) {
+        let newPos = planeIntersectPoint.clone().sub(dragOffset);
+        if (snapEnabled) {
+          newPos.x = Math.round(newPos.x / snapSize) * snapSize;
+          newPos.z = Math.round(newPos.z / snapSize) * snapSize;
+        }
+        dragging.position.copy(newPos);
+        dragging.position.y = Math.max(0.1, dragging.position.y);
+      }
+    } else {
+      const hits = raycaster.intersectObject(floor);
+      if (hits.length) {
+        let targetX = hits[0].point.x + dragOffset.x;
+        let targetZ = hits[0].point.z + dragOffset.z;
+        if (snapEnabled) {
+          targetX = Math.round(targetX / snapSize) * snapSize;
+          targetZ = Math.round(targetZ / snapSize) * snapSize;
+        }
+        dragging.position.x = targetX;
+        dragging.position.z = targetZ;
+        const box = new THREE.Box3().setFromObject(dragging);
+        dragging.position.y -= box.min.y;
+      }
+    }
+    const h = scene.getObjectByName('__selection');
+    if (h) h.update();
+    return;
+  }
+
+  // 3. Hover 悬停与尺寸计算 Badge
+  const hits = raycaster.intersectObjects(objects, true);
+  if (hits.length) {
+    let o = hits[0].object;
+    while (o.parent && !o.userData.isRetailAsset) o = o.parent;
+    if (o.userData.isRetailAsset) {
+      hoveredObj = o;
+      const box = new THREE.Box3().setFromObject(o);
+      const size = box.getSize(new THREE.Vector3());
+
+      dimBadge.style.display = 'block';
+      dimBadge.style.left = (e.clientX + 12) + 'px';
+      dimBadge.style.top = (e.clientY + 12) + 'px';
+      dimBadge.textContent = `${o.userData.displayName || '物件'} (${size.x.toFixed(1)}m × ${size.y.toFixed(1)}m × ${size.z.toFixed(1)}m)`;
+      return;
+    }
+  }
+  dimBadge.style.display = 'none';
+  hoveredObj = null;
+});
+
+renderer.domElement.addEventListener('pointerdown', e => {
+  if (walk) return;
+  setPointer(e);
+  const hits = raycaster.intersectObjects(objects, true);
+  if (hits.length) {
+    let o = hits[0].object;
+    while (o.parent && !o.userData.isRetailAsset) o = o.parent;
+    if (o.userData.isRetailAsset) {
+      if (isSwapMode) {
+        if (swapSourceObj && swapSourceObj !== o) {
+          swapObjectPositions(swapSourceObj, o);
+        } else {
+          say('已被取消或选择了同一个物件');
+        }
+        isSwapMode = false;
+        swapSourceObj = null;
+        return;
+      }
+
+      select(o);
+      if (moveEnabled) {
+        dragging = o;
+        controls.enabled = false;
+
+        if (o.userData.isLightAsset) {
+          dragPlane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(new THREE.Vector3()).negate(), o.position);
+          if (raycaster.ray.intersectPlane(dragPlane, planeIntersectPoint)) {
+            dragOffset.copy(planeIntersectPoint).sub(o.position);
+          }
+        } else {
+          const floorHits = raycaster.intersectObject(floor);
+          if (floorHits.length) {
+            dragOffset.copy(o.position).sub(floorHits[0].point);
+          }
+        }
+        renderer.domElement.setPointerCapture?.(e.pointerId);
+      }
+    }
+  }
+});
+
+renderer.domElement.addEventListener('pointerup', () => {
+  if (dragging) {
+    dragging = null;
+    controls.enabled = !walk;
+    renderList();
+  }
+});
+
+// ---- 第一人称键盘 / 移动端控制 ----
+window.addEventListener('keydown', e => walkKeys[e.key.toLowerCase()] = true);
+window.addEventListener('keyup', e => walkKeys[e.key.toLowerCase()] = false);
+
+document.querySelectorAll('#mobilePad button').forEach(b => {
+  const k = b.dataset.move;
+  b.addEventListener('pointerdown', e => { e.preventDefault(); walkKeys[k] = true; });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => {
+    b.addEventListener(ev, () => walkKeys[k] = false);
+  });
+});
+
+// ---- 主渲染循环 Animation ----
+let prev = performance.now();
+function animate(now) {
+  requestAnimationFrame(animate);
+  if (document.hidden) return; // 标签页切后台时停止渲染，省电
+  const dt = Math.min((now - prev) / 1000, 0.05);
+  prev = now;
+
+  if (walk) {
+    const dir = new THREE.Vector3();
+    camera.getWorldDirection(dir);
+    dir.y = 0;
+    dir.normalize();
+    const right = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).normalize();
+    const speed = 4 * dt;
+    if (walkKeys.w || walkKeys.arrowup || walkKeys.forward) camera.position.addScaledVector(dir, speed);
+    if (walkKeys.s || walkKeys.arrowdown || walkKeys.back) camera.position.addScaledVector(dir, -speed);
+    if (walkKeys.a || walkKeys.arrowleft || walkKeys.left) camera.position.addScaledVector(right, -speed);
+    if (walkKeys.d || walkKeys.arrowright || walkKeys.right) camera.position.addScaledVector(right, speed);
+  }
+
+  controls.update();
+
+  if (selected) {
+    const h = scene.getObjectByName('__selection');
+    if (h) h.update();
+  }
+
+  renderer.render(scene, camera);
+
+  // 场景首帧渲染完成后，隐藏载入层
+  if (pendingHideOverlay && space) {
+    pendingHideOverlay = false;
+    hideOverlay();
+  }
+}
+requestAnimationFrame(animate);
+
+// 默认生成预设陈列物（失败不阻塞场景载入流程）
+try {
+  buildRack();
+  buildCabinet();
+} catch (err) {
+  console.warn('演示陈列物生成失败：', err);
+}
+say('欢迎使用虚拟三维卖场 Pro 场景集成版，正在载入零售卖场场景…');
+tryAutoLoad();
+</script>
+</body>
+</html>
